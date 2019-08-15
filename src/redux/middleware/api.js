@@ -14,7 +14,7 @@ export default store => next => action => {
         throw new Error('endpoint must be string type')
     }
     if (!schema) {
-        throw new Errow('must have schema')
+        throw new Error('must have schema')
     }
     if (!Array.isArray(types) && types.length !== 3) {
         throw new Error('length of types array must > 3 ')

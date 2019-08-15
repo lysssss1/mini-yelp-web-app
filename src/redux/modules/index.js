@@ -1,5 +1,14 @@
-const reducer = (state = {}, action) => {
-    return state;
-}
+import { combineReducers } from "redux";
+import home from "./home";
+import detail from "./detail";
+import app from "./app";
+import entities from "./entities";
 
-export default reducer;
+const rootReducer = combineReducers({
+   entities,
+   home,
+   detail,
+   app
+})
+
+export default rootReducer;
