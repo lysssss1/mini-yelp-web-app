@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ErrorToast from "../../components/ErrorToast"
+import './style.css';
+import { getError } from '../../redux/modules/app';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { actions as appActions, getError} from '../../redux/modules/app';
 
 class App extends Component {
   render() {
+    const {error, appActions: {clearError}} = this.props;
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {error ? <ErrorToast msg={error} clearError={clearError}/> : null}
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state, props) => {
+  return {
+    error: getError(state)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+   return {
+     appActions: bindActionCreators(appActions, dispatch)
+   }
+}
+export default connect(mapStateToProps ,mapDispatchToProps)(App);
