@@ -1,4 +1,4 @@
-import { combineReducers} from "redux"
+import { combineReducers } from "redux"
 import url from "../../utils/url";
 import { FETCH_DATA } from "../middleware/api";
 import { schema } from "./entities/products";
@@ -37,34 +37,7 @@ const initialState = {
     ids: []
   }
 };
-
-export const actions = {
-  //加载猜你喜欢的数据
-  loadLikes: () => {
-    return (dispatch, getState) => {
-      const { pageCount } = getState().home.likes;
-      const rowIndex = pageCount * params.PAGE_SIZE_LIKES;
-      const endpoint = url.getProductList(
-        params.PATH_LIKES,
-        rowIndex,
-        params.PAGE_SIZE_LIKES
-      );
-      return dispatch(fetchLikes(endpoint));
-    };
-  },
-  //加载特惠商品
-  loadDiscounts: () => {
-    return (dispatch, getState) => {
-      const endpoint = url.getProductList(
-        params.PATH_DISCOUNTS,
-        0,
-        params.PAGE_SIZE_DISCOUNTS
-      );
-      return dispatch(fetchDiscounts(endpoint));
-    };
-  }
-};
-
+//actions creater
 const fetchLikes = endpoint => ({
   [FETCH_DATA]: {
     types: [
@@ -89,6 +62,37 @@ const fetchDiscounts = endpoint => ({
   }
 });
 
+export const actions = {
+  //加载猜你喜欢的数据
+  loadLikes: () => {
+    return (dispatch, getState) => {
+      const { pageCount } = getState().home.likes;
+      const rowIndex = pageCount * params.PAGE_SIZE_LIKES;
+      const endpoint = url.getProductList(
+        params.PATH_LIKES,
+        rowIndex,
+        params.PAGE_SIZE_LIKES
+      );
+      return dispatch(fetchLikes(endpoint));
+    };
+  },
+  //加载特惠商品
+  loadDiscounts: () => {
+    return (dispatch, getState) => {
+      const { ids } = getState().home.discounts;
+      if (ids.length > 0) {
+        return null;
+      }
+      const endpoint = url.getProductList(
+        params.PATH_DISCOUNTS,
+        0,
+        params.PAGE_SIZE_DISCOUNTS
+      );
+      return dispatch(fetchDiscounts(endpoint));
+    };
+  }
+};
+
 //猜你喜欢reducer
 const likes = (state = initialState.likes, action) => {
   switch (action.type) {
@@ -102,7 +106,7 @@ const likes = (state = initialState.likes, action) => {
         ids: state.ids.concat(action.response.ids)
       };
     case types.FETCH_LIKES_FAILURE:
-      return {...state, isFetching: false}
+      return { ...state, isFetching: false }
     default:
       return state;
   }
@@ -120,7 +124,7 @@ const discounts = (state = initialState.discounts, action) => {
         ids: state.ids.concat(action.response.ids)
       };
     case types.FETCH_DISCOUNTS_FAILURE:
-      return {...state, isFetching: false}
+      return { ...state, isFetching: false }
     default:
       return state;
   }

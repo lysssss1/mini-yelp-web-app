@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 import "./style.css"
 
 class LikeItem extends Component {
   render() {
     const {
+      id,
       shop,
       tag,
       picture,
@@ -13,23 +16,26 @@ class LikeItem extends Component {
       saleDesc
     } = this.props.data;
     return (
-      <a className="likeItem">
-        <div className="likeItem__picContainer">
-          <div className="likeItem__picTag">{tag}</div>
-          <img className="likeItem__pic" src={picture} />
-        </div>
-        <div className="likeItem__content">
-          <div className="likeItem__shop">{shop}</div>
-          <div className="likeItem__product">{product}</div>
-          <div className="likeItem__detail">
-            <div className="likeItem__price">
-              <ins className="likeItem__currentPrice">{currentPrice}</ins>
-              <del className="likeItem__oldPrice">{oldPrice}</del>
-            </div>
-            <div className="likeItem__sale">{saleDesc}</div>
+      <Router>
+        <Link className="likeItem" to={`/detail/${id}`}>
+          <div className="likeItem__picContainer">
+            <div className="likeItem__picTag">{tag}</div>
+            <img alt=""
+              className="likeItem__pic" src={picture} />
           </div>
-        </div>
-      </a>
+          <div className="likeItem__content">
+            <div className="likeItem__shop">{shop}</div>
+            <div className="likeItem__product">{product}</div>
+            <div className="likeItem__detail">
+              <div className="likeItem__price">
+                <ins className="likeItem__currentPrice">{currentPrice}</ins>
+                <del className="likeItem__oldPrice">{oldPrice}</del>
+              </div>
+              <div className="likeItem__sale">{saleDesc}</div>
+            </div>
+          </div>
+        </Link>
+      </Router>
     );
   }
 }
